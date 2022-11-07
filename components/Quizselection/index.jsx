@@ -4,9 +4,12 @@ import { Processbar } from "./processbar";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFile, deleteFile } from "../../store/actions/main";
 import * as t from "../../store/types";
+import { InputRange } from "./rangeinput";
+import Loading from "./loading";
 
 const Index = () => {
   const [fileName, setFilename] = useState("No file selected");
+  const [isLoading, setIsloading] = useState(false);
   const [showFileinput, setShowfileinput] = useState(false);
   const fileStatus = useSelector((state) => state.main)?.uploadStatus;
   const lengthOfquestions = useSelector((state) => state.main)?.fileContent
@@ -18,6 +21,7 @@ const Index = () => {
   const handleUploadFile = async (e) => {
     dispatch(deleteFile());
     setFilename(null);
+    setIsloading(true);
     var formdata = new FormData();
     formdata.append("files", e.target.files[0]);
 
@@ -26,14 +30,12 @@ const Index = () => {
       body: formdata,
       redirect: "follow",
     };
-    await fetch(
-      "https://lctquizzapp.herokuapp.com/upload-file?n=3",
-      requestOptions
-    )
+    await fetch("https://lctquizzapp.herokuapp.com/upload-file", requestOptions)
       .then((response) => response.json())
       .then((result) => dispatch(uploadFile(JSON.parse(result))))
       .catch((error) => console.log("error", error));
     await setFilename(e.target.files[0].name);
+    setIsloading(false);
     e.target.value = null;
   };
   return (
@@ -52,7 +54,11 @@ const Index = () => {
             This app was created by me to help you review your knowledge by your
             exam questions you have created and sharing your own.
           </p>
-
+          {fileStatus && isLoading ? (
+            <InputRange length={lengthOfquestions} />
+          ) : (
+            <></>
+          )}
           <div className="mb-6 pt-4">
             {showFileinput ? (
               <>
@@ -90,6 +96,7 @@ const Index = () => {
               <></>
             )}
           </div>
+          {isLoading ? <Loading /> : <></>}
           <Processbar filename={fileName} status={fileStatus} />
           <div className="w-full flex justify-end pr-3">
             <button className=" bg-black px-5 py-2 rounded-sm text-white hover:cursor-pointer ">
