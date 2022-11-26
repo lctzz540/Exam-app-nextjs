@@ -4,18 +4,25 @@ import { Processbar } from "./processbar";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFile, deleteFile } from "../../store/actions/main";
 import * as t from "../../store/types";
-import { InputRange } from "./rangeinput";
+import Form from "./Form";
 import Loading from "./loading";
 
 const Index = () => {
   const [fileName, setFilename] = useState("No file selected");
   const [isLoading, setIsloading] = useState(false);
   const [showFileinput, setShowfileinput] = useState(false);
+  const [ready, setReady] = useState(false);
   const fileStatus = useSelector((state) => state.main)?.uploadStatus;
   const lengthOfquestions = useSelector((state) => state.main)?.fileContent
     .length;
   const fileContent = useSelector((state) => state.main)?.fileContent;
   const dispatch = useDispatch();
+  const time = useSelector((state) => state.main)?.time;
+  const numOfQuestion = useSelector((state) => state.main)?.numOfQuestion;
+
+  useEffect(() => {
+    if (numOfQuestion && time) setReady(true);
+  }, [numOfQuestion, time]);
 
   useEffect(() => setShowfileinput(!showFileinput), [fileStatus]);
   const handleUploadFile = async (e) => {
@@ -43,10 +50,6 @@ const Index = () => {
       <h1 className=" text-blue-700 text-center text-3xl font-medium my-6 ">
         Welcome to my Quiz App
       </h1>
-      <p className=" text-center mt-12 mb-8 ">
-        Looking to test your knowledge..? Then you are at the right place. Try
-        out your own quiz with my app!
-      </p>
       <div className=" flex justify-center items-center">
         <div className="container bg-white text-black w-2/3 shadow-2xl rounded-2xl p-5">
           <h1 className=" font-extrabold text-xl ">Hi there, I am lctzz540</h1>
@@ -54,8 +57,8 @@ const Index = () => {
             This app was created by me to help you review your knowledge by your
             exam questions you have created and sharing your own.
           </p>
-          {fileStatus && isLoading ? (
-            <InputRange length={lengthOfquestions} />
+          {fileStatus && !isLoading ? (
+            <Form length={lengthOfquestions} />
           ) : (
             <></>
           )}
@@ -65,44 +68,52 @@ const Index = () => {
                 <label className="mb-5 block text-xl font-semibold text-[#07074D]">
                   Upload File
                 </label>
-                <div className="mb-8">
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    className="sr-only"
-                    onChange={(e) => handleUploadFile(e)}
-                    accept=".docx, .doc"
-                  />
-                  <label
-                    for="file"
-                    className="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
-                  >
-                    <div>
-                      <span className="mb-2 block text-xl font-semibold text-[#07074D]">
-                        Drop files here
-                      </span>
-                      <span className="mb-2 block text-base font-medium text-[#6B7280]">
-                        Or
-                      </span>
-                      <span className="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D]">
-                        Browse
-                      </span>
-                    </div>
-                  </label>
-                </div>
+                {isLoading ? (
+                  <Loading />
+                ) : (
+                  <div className="mb-8">
+                    <input
+                      type="file"
+                      name="file"
+                      id="file"
+                      className="sr-only"
+                      onChange={(e) => handleUploadFile(e)}
+                      accept=".docx, .doc"
+                    />
+                    <label
+                      for="file"
+                      className="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
+                    >
+                      <div>
+                        <span className="mb-2 block text-xl font-semibold text-[#07074D]">
+                          Drop files here
+                        </span>
+                        <span className="mb-2 block text-base font-medium text-[#6B7280]">
+                          Or
+                        </span>
+                        <span className="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D]">
+                          Browse
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                )}
               </>
             ) : (
               <></>
             )}
           </div>
-          {isLoading ? <Loading /> : <></>}
           <Processbar filename={fileName} status={fileStatus} />
-          <div className="w-full flex justify-end pr-3">
-            <button className=" bg-black px-5 py-2 rounded-sm text-white hover:cursor-pointer ">
-              <Link href="/test">Begin Test</Link>
-            </button>
-          </div>
+
+          {ready ? (
+            <div className="w-full flex justify-end pr-3">
+              <button className=" bg-black px-5 py-2 rounded-sm text-white hover:cursor-pointer ">
+                <Link href="/test">Begin Test</Link>
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

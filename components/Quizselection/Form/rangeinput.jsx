@@ -1,10 +1,14 @@
-import { useState } from "react";
-export const InputRange = (props) => {
-  const [numberOfquestion, setNumberofquestion] = useState(10);
+import { useDispatch, useSelector } from "react-redux";
+import { setNumOfQuestion } from "../../../store/actions/main.js";
+
+export const Inputrange = (props) => {
+  const dispatch = useDispatch();
+  const numOfQuestion = useSelector((state) => state.main)?.numOfQuestion;
+
   return (
     <div className="relative pt-1">
       <label for="customRange3" className="form-label">
-        Number of questions: {numberOfquestion}
+        Number of questions: {numOfQuestion}
       </label>
       <input
         type="range"
@@ -18,11 +22,10 @@ export const InputRange = (props) => {
       bg-gray-200
       focus:outline-none focus:ring-0 focus:shadow-none
     "
-        min="0"
+        min="1"
         max={props.length}
         step="1"
-        value={numberOfquestion}
-        onChange={(e) => setNumberofquestion(e.target.value)}
+        onChange={(e) => dispatch(setNumOfQuestion(e.target.value))}
       />
     </div>
   );

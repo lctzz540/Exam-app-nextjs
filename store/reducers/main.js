@@ -1,5 +1,13 @@
 import * as t from "../types";
-const main = (state = { uploadStatus: false, fileContent: [] }, action) => {
+const main = (
+  state = {
+    uploadStatus: false,
+    fileContent: [],
+    time: false,
+    numOfQuestion: false,
+  },
+  action
+) => {
   switch (action.type) {
     case t.UPLOAD_FILE:
       return {
@@ -12,6 +20,16 @@ const main = (state = { uploadStatus: false, fileContent: [] }, action) => {
         ...state,
         uploadStatus: false,
         fileContent: [],
+      };
+    case t.SET_TIME:
+      return {
+        ...state,
+        time: action.payload,
+      };
+    case t.SET_N:
+      return {
+        ...state,
+        numOfQuestion: action.payload,
       };
     default:
       return { ...state };
