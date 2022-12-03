@@ -37,7 +37,7 @@ const Index = () => {
       body: formdata,
       redirect: "follow",
     };
-    await fetch("https://lctquizzapp.herokuapp.com/upload-file", requestOptions)
+    await fetch("https://lctquizzapp.fly.dev/upload-file", requestOptions)
       .then((response) => response.json())
       .then((result) => dispatch(uploadFile(JSON.parse(result))))
       .catch((error) => console.log("error", error));
