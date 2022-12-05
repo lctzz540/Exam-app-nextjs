@@ -15,7 +15,7 @@ const Index = (props) => {
   const [score, setScore] = useState(0);
   const [wrongAnswer, setWrongAnswer] = useState([]);
   const [timeLeft, setTimeLeft] = useState(
-    useSelector((state) => state.main)?.time
+    useSelector((state) => state.main)?.time * 60
   );
   const handleAnswerOptionClick = (isCorrect, Text) => {
     if (isCorrect) {
@@ -46,7 +46,7 @@ const Index = (props) => {
     if (timeLeft > 0) {
       setTimeout(() => setTimeLeft((timeLeft) => timeLeft - 1), 1000);
     } else {
-      if (props.clock) setShowScore(true);
+      if (timeLeft == 0) setShowScore(true);
     }
   }, [timeLeft]);
 
@@ -63,10 +63,10 @@ const Index = (props) => {
           />
         ) : (
           <>
-            <div className="w-4/5 h-3/4 shadow-2xl flex flex-col justify-center font-medium gap-16 mt-20 ">
-              {props.clock ? <Timer timeleft={timeLeft} /> : <></>}
+            <div className="w-4/5 h-3/4 shadow-2xl justify-center font-medium gap-16 m-5 mt-20 ">
+              {timeLeft ? <Timer timeleft={timeLeft} /> : <></>}
               <div className="text-2xl m-5">
-                <span className="pr-5 pl-5">
+                <span className="pr-5">
                   Question {currentQuestion + 1}/{questions.length}:{" "}
                 </span>
                 {questions[currentQuestion].questionText}

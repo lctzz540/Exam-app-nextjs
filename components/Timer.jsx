@@ -6,14 +6,9 @@ const Timer = (props) => {
   const minutesDigits = minutes >= 10 ? String(minutes) : "0" + String(minutes);
   const secondsDigits = seconds >= 10 ? String(seconds) : "0" + String(seconds);
   return (
-    <div
-      style={{
-        fontWeight: "bold",
-        display: "inline-flex",
-      }}
-    >
+    <div className=" font-bold inline text-right">
       <span style={{ color: "red" }}>{minutesDigits}</span>
-      <span style={{ color: "red" }}> :{secondsDigits}</span>
+      <span style={{ color: "red" }}>:{secondsDigits}</span>
     </div>
   );
 };
