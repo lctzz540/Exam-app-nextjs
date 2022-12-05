@@ -65,17 +65,15 @@ const Index = (props) => {
           <>
             <div className="w-4/5 h-3/4 shadow-2xl flex flex-col justify-center items-center font-medium gap-16 mt-20 ">
               {props.clock ? <Timer timeleft={timeLeft} /> : <></>}
-              <div className="text-2xl">
-                <span>Question {currentQuestion + 1}</span>/{questions.length}
-              </div>
               <div className="text-2xl m-5">
+                <span>Question {currentQuestion + 1}: </span>/{questions.length}
                 {questions[currentQuestion].questionText}
               </div>
             </div>
-            <div className=" grid grid-cols-2 gap-8 gap-x-12 m-20 items-center">
+            <div className=" grid grid-cols-1 md:grid-cols-2 gap-8 gap-x-12 m-20 items-center">
               {questions[currentQuestion].answerOptions.map((answerOption) => (
                 <div
-                  className="rounded-md flex justify-center items-center py-4 text-white bg-blue-400 hover:cursor-pointer hover:bg-blue-600"
+                  className="rounded-md flex justify-center items-center py-4 text-white bg-blue-400 hover:cursor-pointer hover:bg-blue-600 p-3"
                   onClick={() =>
                     handleAnswerOptionClick(
                       answerOption.isCorrect,
