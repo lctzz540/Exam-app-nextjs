@@ -1,15 +1,20 @@
 import { React, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import Link from "next/link";
-import Score from "../../components/Score";
+import ExamResultReview from "../../components/ExamResultReview.jsx";
 import Timer from "../../components/Timer";
 
 const Index = (props) => {
-  const numOfQuestion = useSelector((state) => state.main)?.numOfQuestion;
-  const questions = useSelector((state) => state.main)?.fileContent.slice(
-    0,
-    numOfQuestion
-  );
+  const numOfQuestion = useSelector(
+    (state) => state.main,
+    shallowEqual
+  )?.numOfQuestion;
+  const questions = useSelector(
+    (state) => state.main,
+    shallowEqual
+  )?.fileContent.slice(0, numOfQuestion);
+  const time = useSelector((state) => state.main)?.time * 60;
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
@@ -41,6 +46,13 @@ const Index = (props) => {
       setShowScore(true);
     }
   };
+  const restart = () => {
+    setShowScore(false);
+    setScore(0);
+    setWrongAnswer([]);
+    setCurrentQuestion(0);
+    setTimeLeft(time);
+  };
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -56,10 +68,11 @@ const Index = (props) => {
     <>
       <div>
         {showScore ? (
-          <Score
+          <ExamResultReview
+            results={wrongAnswer}
             score={score}
-            numberOfQuestions={questions.length}
-            wrongAnswer={wrongAnswer}
+            numOfQuestion={numOfQuestion}
+            restart={restart}
           />
         ) : (
           <>
