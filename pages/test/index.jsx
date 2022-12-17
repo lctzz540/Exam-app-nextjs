@@ -66,7 +66,17 @@ const Index = (props) => {
   }, [timeLeft]);
 
   const [isQuestionAnswered, setIsQuestionAnswered] = useState(false);
-  if (!numOfQuestion) return <>Go back homepage</>;
+  if (!numOfQuestion)
+    return (
+      <div className="grid place-items-center justify-center h-screen">
+        <Link
+          href="/"
+          className=" px-4 py-2 bg-orange-500 text-white rounded-lg shadow-md"
+        >
+          Go back homepage
+        </Link>
+      </div>
+    );
   return (
     <>
       <div>
