@@ -44,6 +44,7 @@ const Index = (props) => {
       setCurrentQuestion(nextQuestion);
     } else {
       setShowScore(true);
+      clearTimeout(timer);
     }
   };
   const restart = () => {
@@ -53,13 +54,15 @@ const Index = (props) => {
     setCurrentQuestion(0);
     setTimeLeft(time);
   };
+  var timer;
 
   useEffect(() => {
     if (timeLeft > 0) {
-      setTimeout(() => setTimeLeft((timeLeft) => timeLeft - 1), 1000);
+      timer = setTimeout(() => setTimeLeft((timeLeft) => timeLeft - 1), 1000);
     } else {
       if (timeLeft == 0) setShowScore(true);
     }
+    return () => clearTimeout(timer);
   }, [timeLeft]);
 
   const [isQuestionAnswered, setIsQuestionAnswered] = useState(false);
