@@ -70,7 +70,7 @@ const Index = () => {
               </p>
               <ul className="list-disc ml-5">
                 <li>Every question or answer in the different paragraphs</li>
-                <li>The paragraphs question contains "Câu :"</li>
+                <li>The paragraphs question contains \"Câu :\"</li>
               </ul>
             </>
           ) : (
