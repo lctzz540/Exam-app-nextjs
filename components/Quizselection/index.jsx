@@ -57,8 +57,22 @@ const Index = () => {
             This app was created by me to help you review your knowledge by your
             exam questions you have created and sharing your own.
           </p>
-          {fileStatus && !isLoading ? (
+          {fileStatus && !isLoading && lengthOfquestions != 0 ? (
             <Form length={lengthOfquestions} />
+          ) : (
+            <></>
+          )}
+          {lengthOfquestions === 0 && fileStatus ? (
+            <>
+              <p className="text-2xl font-bold text-center mt-10">
+                No questions avaiable, please check the format of your file
+                again!
+              </p>
+              <ul className="list-disc ml-5">
+                <li>Every question or answer in the different paragraphs</li>
+                <li>The paragraphs question contains "Câu :"</li>
+              </ul>
+            </>
           ) : (
             <></>
           )}
