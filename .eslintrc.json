@@ -1,4 +1,18 @@
 {
   "extends": "next/core-web-vitals",
-  "react/no-unescaped-entities": [<enabled>, { "forbid": Array<string> }]
+  "react/no-unescaped-entities": [
+    "error",
+    {
+      "forbid": [
+        {
+          "char": ">",
+          "alternatives": ["&gt;"]
+        },
+        {
+          "char": "}",
+          "alternatives": ["&#125;"]
+        }
+      ]
+    }
+  ]
 }
