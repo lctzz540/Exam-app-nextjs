@@ -64,13 +64,14 @@ const Index = () => {
           )}
           {lengthOfquestions === 0 && fileStatus ? (
             <>
-              <p className="text-2xl font-bold text-center mt-10">
-                No questions avaiable, please check the format of your file
-                again!
+              <p className="text-2xl font-bold text-center mt-10 mb-5">
+                No questions avaiable, make sure your format matches with rules
+                below!
               </p>
               <ul className="list-disc ml-5">
                 <li>Every question or answer in the different paragraphs</li>
                 <li>The paragraphs question contains &quot;Câu :&quot;</li>
+                <li>The correct answer is underlined</li>
               </ul>
             </>
           ) : (

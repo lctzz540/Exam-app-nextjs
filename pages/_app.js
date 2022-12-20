@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import { store } from "../store/store";
+import { wrapper, store } from "../store/store";
 import { Provider } from "react-redux";
 
 function MyApp({ Component, pageProps }) {
@@ -12,4 +12,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);
