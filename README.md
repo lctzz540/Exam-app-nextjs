@@ -1,34 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is my Nextjs project about the exam app. Deployed on Vercel: [exam-app-nextjs.vercel.app](exam-app-nextjs.vercel.app)
 
-## Getting Started
+## Usage
 
-First, run the development server:
+1. Click on the button Browse at homepage and choose the file you want to upload:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+![ScreenshotHomePage](./screenshot/Screenshot%202022-12-22%20at%2014.31.57.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Drag both bar to define your test. It will randomize your set of questions.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+![ScreenshotHomePage](./screenshot/Screenshot%202022-12-22%20at%2014.37.56.png)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+3. Enjoy your test and you can do it again until it's all in your memory. After that, you can change the number of questions to take over the questions set.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+![ScreenshotHomePage](./screenshot/Screenshot%202022-12-22%20at%2014.57.03.png)
 
-## Learn More
+Notice: Make sure your file upload has matched the format below:
+1. Every question and answer is in a different line.
+2. The question is contain "Câu {id}:". You replace the {id} with any number, but it is not to be empty or any characters. It must be a number.
 
-To learn more about Next.js, take a look at the following resources:
+## For developer
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+If you detect my issue or contribute to feature development. Please contact me. Thank you and if you like my ideas, let vote me a star, it means a lot to me.
