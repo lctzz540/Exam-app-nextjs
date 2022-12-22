@@ -1,4 +1,5 @@
 import React from "react";
+import PassAll from "./PassAll.jsx";
 
 const ExamResultReview = ({ results, score, numOfQuestion, restart }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -8,7 +9,7 @@ const ExamResultReview = ({ results, score, numOfQuestion, restart }) => {
   const handlePrevious = (e) => {
     setCurrentIndex(currentIndex - 1);
   };
-
+  if (results.length == 0) return <PassAll />;
   return (
     <div className="container mx-auto px-4 grid place-items-center h-screen">
       <div className="bg-white shadow-md rounded-lg p-4 m-10 md:w-[50%]">

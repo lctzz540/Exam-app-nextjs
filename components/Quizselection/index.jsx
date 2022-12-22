@@ -6,45 +6,22 @@ import { uploadFile, deleteFile } from "../../store/actions/main";
 import * as t from "../../store/types";
 import Form from "./Form";
 import Loading from "./loading";
+import useUpload from "../../hooks/useUpload.js";
 
 const Index = () => {
-  const [fileName, setFilename] = useState("No file selected");
-  const [isLoading, setIsloading] = useState(false);
-  const [showFileinput, setShowfileinput] = useState(false);
-  const [ready, setReady] = useState(false);
-  const fileStatus = useSelector((state) => state.main)?.uploadStatus;
-  const lengthOfquestions = useSelector((state) => state.main)?.fileContent
-    .length;
-  const fileContent = useSelector((state) => state.main)?.fileContent;
-  const dispatch = useDispatch();
-  const time = useSelector((state) => state.main)?.time;
-  const numOfQuestion = useSelector((state) => state.main)?.numOfQuestion;
+  const [
+    fileName,
+    isLoading,
+    showFileinput,
+    ready,
+    fileStatus,
+    lengthOfquestions,
+    fileContent,
+    time,
+    numOfQuestion,
+    handleUploadFile,
+  ] = useUpload();
 
-  useEffect(() => {
-    if (numOfQuestion && time) setReady(true);
-  }, [numOfQuestion, time]);
-
-  useEffect(() => setShowfileinput(!showFileinput), [fileStatus]);
-  const handleUploadFile = async (e) => {
-    dispatch(deleteFile());
-    setFilename(null);
-    setIsloading(true);
-    var formdata = new FormData();
-    formdata.append("files", e.target.files[0]);
-
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
-    await fetch("https://lctquizzapp.fly.dev/upload-file", requestOptions)
-      .then((response) => response.json())
-      .then((result) => dispatch(uploadFile(JSON.parse(result))))
-      .catch((error) => console.log("error", error));
-    await setFilename(e.target.files[0].name);
-    setIsloading(false);
-    e.target.value = null;
-  };
   return (
     <div className=" pt-6">
       <h1 className=" text-blue-700 text-center text-3xl font-medium my-6 ">

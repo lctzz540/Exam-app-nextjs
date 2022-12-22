@@ -1,71 +1,21 @@
-import { React, useState, useEffect } from "react";
-import { useSelector, shallowEqual } from "react-redux";
 import Link from "next/link";
 import ExamResultReview from "../../components/ExamResultReview.jsx";
 import Timer from "../../components/Timer";
+import useExam from "../../hooks/useExam.js";
 
 const Index = (props) => {
-  const numOfQuestion = useSelector(
-    (state) => state.main,
-    shallowEqual
-  )?.numOfQuestion;
-  const questions = useSelector(
-    (state) => state.main,
-    shallowEqual
-  )?.fileContent.slice(0, numOfQuestion);
-  const time = useSelector((state) => state.main)?.time * 60;
+  const [
+    numOfQuestion,
+    showScore,
+    wrongAnswer,
+    restart,
+    timeLeft,
+    currentQuestion,
+    questions,
+    handleAnswerOptionClick,
+    score,
+  ] = useExam();
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [showScore, setShowScore] = useState(false);
-  const [score, setScore] = useState(0);
-  const [wrongAnswer, setWrongAnswer] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(
-    useSelector((state) => state.main)?.time * 60
-  );
-  const handleAnswerOptionClick = (isCorrect, Text) => {
-    if (isCorrect) {
-      setScore(score + 1);
-    } else {
-      setWrongAnswer(
-        wrongAnswer.concat([
-          [
-            questions[currentQuestion].questionText,
-            questions[currentQuestion].answerOptions.find(
-              (element) => element.isCorrect === true
-            ).answerText,
-            Text,
-          ],
-        ])
-      );
-    }
-
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setShowScore(true);
-      clearTimeout(timer);
-    }
-  };
-  const restart = () => {
-    setShowScore(false);
-    setScore(0);
-    setWrongAnswer([]);
-    setCurrentQuestion(0);
-    setTimeLeft(time);
-  };
-  var timer;
-
-  useEffect(() => {
-    if (timeLeft > 0) {
-      timer = setTimeout(() => setTimeLeft((timeLeft) => timeLeft - 1), 1000);
-    } else {
-      if (timeLeft == 0) setShowScore(true);
-    }
-    return () => clearTimeout(timer);
-  }, [timeLeft]);
-
-  const [isQuestionAnswered, setIsQuestionAnswered] = useState(false);
   if (!numOfQuestion)
     return (
       <div className="grid place-items-center justify-center h-screen">
@@ -108,7 +58,7 @@ const Index = (props) => {
                       answerOption.answerText
                     )
                   }
-                  key="questions"
+                  key={answerOption.answerText}
                 >
                   {answerOption.answerText}
                 </div>
