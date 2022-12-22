@@ -7,7 +7,7 @@ export const Inputrange = (props) => {
 
   return (
     <div className="relative pt-1">
-      <label for="customRange3" className="form-label">
+      <label htmlFor="customRange3" className="form-label">
         Number of questions: {numOfQuestion}
       </label>
       <input

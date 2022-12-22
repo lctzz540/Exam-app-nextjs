@@ -6,7 +6,7 @@ export const Inputtime = () => {
   const time = useSelector((state) => state.main)?.time;
   return (
     <div className="relative pt-1">
-      <label for="customRange3" className="form-label">
+      <label htmlFor="customRange3" className="form-label">
         Time for this test: {time}
       </label>
       <input

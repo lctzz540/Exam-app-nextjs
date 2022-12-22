@@ -3,10 +3,10 @@ import PassAll from "./PassAll.jsx";
 
 const ExamResultReview = ({ results, score, numOfQuestion, restart }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
-  const handleNext = (e) => {
+  const handleNext = () => {
     setCurrentIndex(currentIndex + 1);
   };
-  const handlePrevious = (e) => {
+  const handlePrevious = () => {
     setCurrentIndex(currentIndex - 1);
   };
   if (results.length == 0) return <PassAll />;

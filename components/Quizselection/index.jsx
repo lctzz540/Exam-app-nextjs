@@ -1,9 +1,6 @@
-import { React, useState, useEffect } from "react";
+import { React } from "react";
 import Link from "next/link";
 import { Processbar } from "./processbar";
-import { useDispatch, useSelector } from "react-redux";
-import { uploadFile, deleteFile } from "../../store/actions/main";
-import * as t from "../../store/types";
 import Form from "./Form";
 import Loading from "./loading";
 import useUpload from "../../hooks/useUpload.js";
@@ -16,9 +13,6 @@ const Index = () => {
     ready,
     fileStatus,
     lengthOfquestions,
-    fileContent,
-    time,
-    numOfQuestion,
     handleUploadFile,
   ] = useUpload();
 
@@ -73,7 +67,7 @@ const Index = () => {
                       accept=".docx, .doc"
                     />
                     <label
-                      for="file"
+                      htmlFor="file"
                       className="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
                     >
                       <div>

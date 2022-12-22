@@ -1,9 +1,9 @@
-import Link from "next/link";
-import ExamResultReview from "../../components/ExamResultReview.jsx";
-import Timer from "../../components/Timer";
-import useExam from "../../hooks/useExam.js";
+import Link from 'next/link';
+import ExamResultReview from '../../components/ExamResultReview.jsx';
+import Timer from '../../components/Timer';
+import useExam from '../../hooks/useExam.js';
 
-const Index = (props) => {
+const Index = () => {
   const [
     numOfQuestion,
     showScore,

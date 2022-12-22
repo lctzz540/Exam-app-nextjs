@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFile, deleteFile } from "../store/actions/main.js";
-import * as t from "../store/types.js";
 
 const useUpload = () => {
   const [fileName, setFilename] = useState("No file selected");
@@ -11,7 +10,6 @@ const useUpload = () => {
   const fileStatus = useSelector((state) => state.main)?.uploadStatus;
   const lengthOfquestions = useSelector((state) => state.main)?.fileContent
     .length;
-  const fileContent = useSelector((state) => state.main)?.fileContent;
   const dispatch = useDispatch();
   const time = useSelector((state) => state.main)?.time;
   const numOfQuestion = useSelector((state) => state.main)?.numOfQuestion;
@@ -48,9 +46,6 @@ const useUpload = () => {
     ready,
     fileStatus,
     lengthOfquestions,
-    fileContent,
-    time,
-    numOfQuestion,
     handleUploadFile,
   ];
 };
