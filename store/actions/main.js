@@ -11,3 +11,6 @@ export const setTime = (time) => (dispatch) => {
 export const setNumOfQuestion = (numOfQuestion) => (dispatch) => {
   dispatch({ type: t.SET_N, payload: numOfQuestion });
 };
+export const setUser = (username) => (dispatch) => {
+  dispatch({ type: t.SET_USER, payload: username });
+};

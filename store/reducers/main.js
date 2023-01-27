@@ -5,6 +5,7 @@ const main = (
     fileContent: [],
     time: false,
     numOfQuestion: false,
+    user: false,
   },
   action
 ) => {
@@ -30,6 +31,11 @@ const main = (
       return {
         ...state,
         numOfQuestion: action.payload,
+      };
+    case t.SET_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return { ...state };
