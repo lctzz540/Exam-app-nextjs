@@ -1,10 +1,13 @@
-import React, { useRef, useState } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import useUpload from "../hooks/useUpload";
+import { uploadFile } from "../store/actions/main";
 import Card from "./Card";
 import ModalCard from "./ModelCard";
 
 const Panel = () => {
+  const dispatch = useDispatch();
+
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,15 +22,25 @@ const Panel = () => {
     fileInputRef.current.click();
   };
   const handleCardClick = (card) => {
-    setSelectedCard(card);
+    setSelectedCard({
+      ...card,
+      image: card.image || false,
+    });
     setIsModalOpen(true);
   };
 
   const handleImageChange = (e) => {
+    const questionsCopy = questions;
+    const newImage = e.target.files[0];
+    const index = questions.findIndex(
+      (q) => q.questionText === selectedCard.question
+    );
+    questionsCopy[index].image = newImage;
     setSelectedCard({
       ...selectedCard,
-      image: URL.createObjectURL(e.target.files[0]),
+      image: newImage,
     });
+    dispatch(uploadFile(questionsCopy));
   };
 
   const handleUploadImageClick = () => {
@@ -65,7 +78,7 @@ const Panel = () => {
               handleCardClick({
                 question: question.questionText,
                 answer: question.answerOptions,
-                image: false,
+                image: question.image || false,
               })
             }
           />
