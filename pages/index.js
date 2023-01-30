@@ -17,7 +17,11 @@ export default function Home() {
             buttonText={`Hi ${user}`}
             options={[
               { id: 1, text: "Dashboard", url: "/dashboard" },
-              { id: 2, text: "Log out", url: "/logout" },
+              {
+                id: 2,
+                text: "Log out",
+                onClick: () => sessionStorage.clear(),
+              },
             ]}
           />
         ) : (

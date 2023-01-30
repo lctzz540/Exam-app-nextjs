@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import useUpload from "../hooks/useUpload";
@@ -30,7 +31,7 @@ const Panel = () => {
   };
 
   const handleImageChange = (e) => {
-    const questionsCopy = questions;
+    const questionsCopy = [...questions];
     const newImage = e.target.files[0];
     const index = questions.findIndex(
       (q) => q.questionText === selectedCard.question
@@ -46,11 +47,34 @@ const Panel = () => {
   const handleUploadImageClick = () => {
     imageInputRef.current.click();
   };
+  const handleSendtoServer = () => {
+    if (questions.length !== 0) {
+      questions.forEach(async (question) => {
+        question.subject = "gpb";
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
+        myHeaders.append("Content-Type", "application/json");
 
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: JSON.stringify(question),
+          redirect: "follow",
+          withCredentials: true,
+        };
+
+        fetch("http://127.0.0.1:8080/question/addownquestion", requestOptions)
+          .then((response) => response.json())
+          .then((result) => console.log(result))
+          .catch((error) => console.log("error", error));
+        console.log(myHeaders.get("Authorization"));
+      });
+    }
+  };
   const handleFileChange = useUpload()[6];
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="absolute top-0 right-0 ">
+      <div className="absolute top-0 right-0 flex">
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded-lg m-2"
           onClick={handleUploadClick}
@@ -62,8 +86,20 @@ const Panel = () => {
           ref={fileInputRef}
           style={{ display: "none" }}
           accept=".docx, .doc"
-          onChange={(e) => handleFileChange(e)}
+          onChange={(e) =>
+            handleFileChange(e).then(console.log(questions.length))
+          }
         />
+        {questions.length !== 0 ? (
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg m-2"
+            onClick={handleSendtoServer}
+          >
+            Save in Cloud
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
       <div className=" bg-white rounded-lg w-4/5 h-2/3 p-4 overflow-auto flex flex-wrap ">
         {questions.map((question, index) => (

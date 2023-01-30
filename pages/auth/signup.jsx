@@ -10,7 +10,7 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    fetch("http://localhost:8080/users/signup", {
+    fetch("http://127.0.0.1:8080/users/signup", {
       method: "POST",
       header: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

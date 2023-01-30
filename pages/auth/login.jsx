@@ -11,7 +11,7 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    fetch("http://localhost:8080/users/login", {
+    fetch("http://127.0.0.1:8080/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
