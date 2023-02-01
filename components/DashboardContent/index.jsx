@@ -1,18 +1,35 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import useUpload from "../hooks/useUpload";
-import { uploadFile } from "../store/actions/main";
-import Card from "./Card";
-import ModalCard from "./ModelCard";
+import useUpload from "../../hooks/useUpload";
+import { uploadFile } from "../../store/actions/main";
+import Card from "../Card";
+import ModalChoice from "../Modal/ModalChoice";
+import ModalCard from "../Modal/ModelCard";
 
-const Panel = () => {
+const Index = () => {
   const dispatch = useDispatch();
+  useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch("http://127.0.0.1:8080/question/getownquestion", requestOptions)
+      .then(response => response.json())
+      .then(result => dispatch(uploadFile(result)))
+      .catch(error => console.log('error', error));
+  }, [])
 
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalCardOpen, setIsModalCardOpen] = useState(false);
+  const [isModalChoiceOpen, setIsModalChoiceOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [subject, setSubject] = useState()
 
   const questions = useSelector(
     (state) => state.main,
@@ -27,8 +44,9 @@ const Panel = () => {
       ...card,
       image: card.image || false,
     });
-    setIsModalOpen(true);
+    setIsModalCardOpen(true);
   };
+  const handleSaveOnCloud = () => setIsModalChoiceOpen(true);
 
   const handleImageChange = (e) => {
     const questionsCopy = [...questions];
@@ -47,10 +65,15 @@ const Panel = () => {
   const handleUploadImageClick = () => {
     imageInputRef.current.click();
   };
+
+  const handleChangeSubject = (e) => setSubject(e.target.value)
+
   const handleSendtoServer = () => {
+    var success = 0;
+    var unsuccessful = 0;
     if (questions.length !== 0) {
-      questions.forEach(async (question) => {
-        question.subject = "gpb";
+      const requests = questions.map((question) => {
+        question.subject = subject;
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
         myHeaders.append("Content-Type", "application/json");
@@ -63,14 +86,29 @@ const Panel = () => {
           withCredentials: true,
         };
 
-        fetch("http://127.0.0.1:8080/question/addownquestion", requestOptions)
-          .then((response) => response.json())
-          .then((result) => console.log(result))
-          .catch((error) => console.log("error", error));
-        console.log(myHeaders.get("Authorization"));
+        return fetch(
+          "http://127.0.0.1:8080/question/addownquestion",
+          requestOptions
+        )
+          .then((response) => {
+            if (response.ok) {
+              success++;
+            } else {
+              unsuccessful++;
+            }
+          })
+          .catch(() => {
+            unsuccessful++;
+          });
+      });
+
+      Promise.all(requests).then(() => {
+        console.log("success:", success);
+        console.log("unsuccessful:", unsuccessful);
       });
     }
   };
+
   const handleFileChange = useUpload()[6];
   return (
     <div className="h-screen flex justify-center items-center">
@@ -93,9 +131,9 @@ const Panel = () => {
         {questions.length !== 0 ? (
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded-lg m-2"
-            onClick={handleSendtoServer}
+            onClick={handleSaveOnCloud}
           >
-            Save in Cloud
+            Save on Cloud
           </button>
         ) : (
           <></>
@@ -120,9 +158,9 @@ const Panel = () => {
           />
         ))}
       </div>
-      {isModalOpen && (
+      {isModalCardOpen && (
         <ModalCard
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsModalCardOpen(false)}
           image={selectedCard.image}
         >
           <h2 className="text-black text-lg font-medium mb-2">
@@ -167,8 +205,17 @@ const Panel = () => {
           />
         </ModalCard>
       )}
+      {isModalChoiceOpen && (
+        <ModalChoice
+          title={"Select Subject"}
+          onClose={() => setIsModalChoiceOpen(false)}
+          options={[{ label: "gpb", value: "gpb" }]}
+          handleChange={handleChangeSubject}
+          handleUpload={handleSendtoServer}
+        ></ModalChoice>
+      )}
     </div>
   );
 };
 
-export default Panel;
+export default Index;

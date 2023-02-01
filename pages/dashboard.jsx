@@ -1,11 +1,11 @@
-import Panel from "../components/Panel";
+import DashBoardContent from "../components/DashboardContent";
 import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
   return (
     <div>
       <Sidebar />
-      <Panel />
+      <DashBoardContent />
     </div>
   );
 };

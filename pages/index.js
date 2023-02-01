@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Dropdown from "../components/Dropdown";
+import DropdownButton from "../components/Dropdown/DropdownButton";
 import Quizselection from "../components/Quizselection/";
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <nav className="flex justify-end">
         {user ? (
-          <Dropdown
+          <DropdownButton
             buttonText={`Hi ${user}`}
             options={[
               { id: 1, text: "Dashboard", url: "/dashboard" },
