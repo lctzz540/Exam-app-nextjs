@@ -69,43 +69,28 @@ const Index = () => {
   const handleChangeSubject = (e) => setSubject(e.target.value)
 
   const handleSendtoServer = () => {
-    var success = 0;
-    var unsuccessful = 0;
     if (questions.length !== 0) {
-      const requests = questions.map((question) => {
-        question.subject = subject;
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
-        myHeaders.append("Content-Type", "application/json");
+      questions.map((question) => question.subject = subject)
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
+      myHeaders.append("Content-Type", "application/json");
 
-        var requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: JSON.stringify(question),
-          redirect: "follow",
-          withCredentials: true,
-        };
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(questions),
+        redirect: "follow",
+        withCredentials: true,
+      };
 
-        return fetch(
-          "http://127.0.0.1:8080/question/addownquestion",
-          requestOptions
-        )
-          .then((response) => {
-            if (response.ok) {
-              success++;
-            } else {
-              unsuccessful++;
-            }
-          })
-          .catch(() => {
-            unsuccessful++;
-          });
-      });
-
-      Promise.all(requests).then(() => {
-        console.log("success:", success);
-        console.log("unsuccessful:", unsuccessful);
-      });
+      return fetch(
+        "http://127.0.0.1:8080/question/addmanyownquestion",
+        requestOptions
+      )
+        .then((response) => response.json()).then((data) => console.log(data))
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
