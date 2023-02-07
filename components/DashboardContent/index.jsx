@@ -13,23 +13,26 @@ const Index = () => {
     myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
 
     var requestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: myHeaders,
-      redirect: 'follow'
+      redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8080/question/getownquestion", requestOptions)
-      .then(response => response.json())
-      .then(result => dispatch(uploadFile(result)))
-      .catch(error => console.log('error', error));
-  }, [])
+    fetch(
+      "https://exam-web-service.onrender.com/question/getownquestion",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => dispatch(uploadFile(result)))
+      .catch((error) => console.log("error", error));
+  }, []);
 
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const [isModalCardOpen, setIsModalCardOpen] = useState(false);
   const [isModalChoiceOpen, setIsModalChoiceOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [subject, setSubject] = useState()
+  const [subject, setSubject] = useState();
 
   const questions = useSelector(
     (state) => state.main,
@@ -66,11 +69,11 @@ const Index = () => {
     imageInputRef.current.click();
   };
 
-  const handleChangeSubject = (e) => setSubject(e.target.value)
+  const handleChangeSubject = (e) => setSubject(e.target.value);
 
   const handleSendtoServer = () => {
     if (questions.length !== 0) {
-      questions.map((question) => question.subject = subject)
+      questions.map((question) => (question.subject = subject));
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
       myHeaders.append("Content-Type", "application/json");
@@ -87,7 +90,8 @@ const Index = () => {
         "http://127.0.0.1:8080/question/addmanyownquestion",
         requestOptions
       )
-        .then((response) => response.json()).then((data) => console.log(data))
+        .then((response) => response.json())
+        .then((data) => console.log(data))
         .catch((err) => {
           console.log(err);
         });
