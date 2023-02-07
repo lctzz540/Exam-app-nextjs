@@ -25,7 +25,9 @@ const Login = () => {
         }
         sessionStorage.setItem("user", result.name);
       })
-      .then(router.push("/dashboard"))
+      .then(() => {
+        router.push("/dashboard");
+      })
       .catch((error) => {
         console.error(error);
       });
