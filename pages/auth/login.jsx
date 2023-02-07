@@ -18,18 +18,24 @@ const Login = () => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
       .then((result) => {
         if (result.token) {
           sessionStorage.setItem("jwt", result.token);
+          sessionStorage.setItem("user", result.name);
+          router.push("/dashboard");
+        } else {
+          alert("Login failed: " + result.message);
         }
-        sessionStorage.setItem("user", result.name);
-      })
-      .then(() => {
-        router.push("/dashboard");
       })
       .catch((error) => {
         console.error(error);
+        alert("Login failed: " + error.message);
       });
   };
   return (
