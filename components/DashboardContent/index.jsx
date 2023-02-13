@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import useGetQuestion from "../../hooks/useGetQuestion";
 import useUpload from "../../hooks/useUpload";
 import { uploadFile } from "../../store/actions/main";
@@ -12,6 +13,7 @@ const Index = () => {
   const [isModalChoiceOpen, setIsModalChoiceOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [subject, setSubject] = useState();
+  const dispatch = useDispatch();
 
   const questions = useGetQuestion();
 
@@ -63,7 +65,7 @@ const Index = () => {
       };
 
       return fetch(
-        "http://127.0.0.1:8080/question/addmanyownquestion",
+        "https://exam-web-service.onrender.com/question/addmanyownquestion",
         requestOptions
       )
         .then((response) => response.json())
@@ -73,6 +75,7 @@ const Index = () => {
         });
     }
   };
+  const handleDoExam = () => { };
 
   const handleFileChange = useUpload()[6];
   return (
@@ -94,12 +97,20 @@ const Index = () => {
           }
         />
         {questions.length !== 0 ? (
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg m-2"
-            onClick={handleSaveOnCloud}
-          >
-            Save on Cloud
-          </button>
+          <>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg m-2"
+              onClick={handleSaveOnCloud}
+            >
+              Save on Cloud
+            </button>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg m-2"
+              onClick={handleDoExam}
+            >
+              Do this exam
+            </button>
+          </>
         ) : (
           <></>
         )}
