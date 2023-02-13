@@ -11,7 +11,6 @@
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^2.9.10",
-    "@next/swc-darwin-arm64": "13.1.6",
     "@reduxjs/toolkit": "^1.9.0",
     "axios": "^1.2.6",
     "eslint-config-next": "13.0.2",
@@ -30,6 +29,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
+    "@next/swc-darwin-arm64": "13.1.6",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb": "^19.0.4",

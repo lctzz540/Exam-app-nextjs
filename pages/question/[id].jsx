@@ -26,7 +26,10 @@ function Question() {
         redirect: "follow",
       };
 
-      fetch("http://127.0.0.1:8080/question/getquestionbyid", requestOptions)
+      fetch(
+        "https://exam-web-service.onrender.com/question/getquestionbyid",
+        requestOptions
+      )
         .then((response) => response.text())
         .then((result) => JSON.parse(result))
         .then((question) => {
