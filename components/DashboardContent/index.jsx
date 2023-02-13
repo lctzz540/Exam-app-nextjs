@@ -1,32 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
+import useGetQuestion from "../../hooks/useGetQuestion";
 import useUpload from "../../hooks/useUpload";
 import { uploadFile } from "../../store/actions/main";
 import Card from "../Card";
-import ModalChoice from "../Modal/ModalChoice";
-import ModalCard from "../Modal/ModelCard";
+import ModalDashboard from "./ModalDashboard";
 
 const Index = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", `${sessionStorage.getItem("jwt")}`);
-
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    fetch(
-      "https://exam-web-service.onrender.com/question/getownquestion",
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => dispatch(uploadFile(result)))
-      .catch((error) => console.log("error", error));
-  }, []);
-
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const [isModalCardOpen, setIsModalCardOpen] = useState(false);
@@ -34,10 +13,7 @@ const Index = () => {
   const [selectedCard, setSelectedCard] = useState({});
   const [subject, setSubject] = useState();
 
-  const questions = useSelector(
-    (state) => state.main,
-    shallowEqual
-  )?.fileContent;
+  const questions = useGetQuestion();
 
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -142,67 +118,24 @@ const Index = () => {
                 question: question.questionText,
                 answer: question.answerOptions,
                 image: question.image || false,
+                questionID: question.QuestionID,
               })
             }
           />
         ))}
       </div>
-      {isModalCardOpen && (
-        <ModalCard
-          onClose={() => setIsModalCardOpen(false)}
-          image={selectedCard.image}
-        >
-          <h2 className="text-black text-lg font-medium mb-2">
-            {selectedCard.question}
-          </h2>
-          {selectedCard.answer.map((answerOption) => {
-            if (!answerOption.isCorrect) {
-              return (
-                <p className="text-gray-500 text-sm" key="answerText">
-                  {answerOption.answerText}
-                </p>
-              );
-            } else {
-              return (
-                <p className="text-green-500 text-sm" key="answerTextCorrect">
-                  {answerOption.answerText}
-                </p>
-              );
-            }
-          })}
-          {!selectedCard.image ? (
-            <button
-              className="text-blue-500 text-sm mt-3"
-              onClick={handleUploadImageClick}
-            >
-              + Add image
-            </button>
-          ) : (
-            <button
-              className="text-blue-500 text-sm mt-3"
-              onClick={handleUploadImageClick}
-            >
-              Edit image
-            </button>
-          )}
-          <input
-            type="file"
-            ref={imageInputRef}
-            style={{ display: "none" }}
-            onChange={(e) => handleImageChange(e)}
-            accept=".png, .jpg, .jpeg"
-          />
-        </ModalCard>
-      )}
-      {isModalChoiceOpen && (
-        <ModalChoice
-          title={"Select Subject"}
-          onClose={() => setIsModalChoiceOpen(false)}
-          options={[{ label: "gpb", value: "gpb" }]}
-          handleChange={handleChangeSubject}
-          handleUpload={handleSendtoServer}
-        ></ModalChoice>
-      )}
+      <ModalDashboard
+        selectedCard={selectedCard}
+        handleUploadImageClick={handleUploadImageClick}
+        imageInputRef={imageInputRef}
+        handleImageChange={handleImageChange}
+        isModalCardOpen={isModalCardOpen}
+        setIsModalCardOpen={setIsModalCardOpen}
+        isModalChoiceOpen={isModalChoiceOpen}
+        setIsModalChoiceOpen={setIsModalChoiceOpen}
+        handleChangeSubject={handleChangeSubject}
+        handleSendtoServer={handleSendtoServer}
+      />
     </div>
   );
 };

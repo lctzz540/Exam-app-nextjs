@@ -26,8 +26,8 @@ const Login = () => {
       })
       .then((result) => {
         if (result.token) {
-          sessionStorage.setItem("jwt", result.token);
-          sessionStorage.setItem("user", result.name);
+          localStorage.setItem("jwt", result.token);
+          localStorage.setItem("user", result.name);
           router.push("/dashboard");
         } else {
           alert("Login failed: " + result.message);
